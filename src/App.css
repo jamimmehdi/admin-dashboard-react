@@ -1,38 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  font-family: 'Manrope', sans-serif;
+  padding-top: 50px;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  border: 1px solid black;
+}
+
+.search-bar {
+  margin-bottom: 10px;
+}
+
+::placeholder {
+  font-weight: lighter;
+  color: gainsboro;
+}
+
+.search-input {
+  width: 80vw;
+  padding: 5px 10px;
+  border: 0.5px solid gainsboro;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.search-input:focus-visible {
+  outline: none;
+}
+
+.table {
+  width: 80vw !important;
+  font-size: 0.75rem;
+}
+
+th,
+tr,
+td {
+  border-bottom: 1px solid black;
+  padding: 8px 0 !important;
+}
+
+th {
+  font-weight: 800;
+}
+
+.xl-cell {
+  width: 20%;
+  padding-left: 10px !important;
+}
+
+.action-icons {
+  font-size: 1rem;
+  display: flex;
+  column-gap: 1rem;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: flex-start;
 }
 
-.App-link {
-  color: #61dafb;
+.red {
+  color: rgb(237, 48, 48);
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.blue {
+  color: rgb(33, 134, 243);
+  cursor: pointer;
+}
+
+.row-selected {
+  border-radius: 10px !important;
+  background-color: rgb(240, 240, 240) !important;
 }
