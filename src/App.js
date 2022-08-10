@@ -2,10 +2,11 @@ import { useEffect, useReducer } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import Table from './components/Table';
-import { adminContext } from './Helper/adminContext';
-import { LOAD__INITIAL_DATA, LOAD__DATA, LOAD__CURRENT__PAGE__DATA } from './Reducer/actions.type';
-import adminReducer from './Reducer/adminReducer';
-import {URL} from './api.config';
+import { adminContext } from './helper/adminContext';
+import { LOAD__INITIAL_DATA, LOAD__DATA, LOAD__CURRENT__PAGE__DATA } from './reducer/actions.type';
+import adminReducer from './reducer/adminReducer';
+import { URL } from './api.config';
+import Paginations from './components/Paginations';
 
 
 function App() {
@@ -31,19 +32,17 @@ function App() {
 
   // Set current page data
   const setCurrentPageData = (new_page) => {
-    const { page_count, data } = state;
+    const { page_count, current_working_data } = state;
     const starting_index = getStartingIndex(new_page);
     const ending_index = getEndingIndex(new_page);
     if (new_page < page_count) {
-      const current_page_new_data = data.slice(starting_index, ending_index);
+      const current_page_new_data = current_working_data.slice(starting_index, ending_index);
       dispatch({
         type: LOAD__CURRENT__PAGE__DATA,
-        payload: {
-          current_page_new_data, current_page: new_page
-        }
+        payload: { current_page_new_data, current_page: new_page }
       });
     } else {
-      const current_page_new_data = data.slice(starting_index, data.length);
+      const current_page_new_data = current_working_data.slice(starting_index, current_working_data.length);
       dispatch({
         type: LOAD__CURRENT__PAGE__DATA,
         payload: { current_page_new_data, current_page: new_page }
@@ -64,29 +63,35 @@ function App() {
         return employee_details;
       }
     });
-    loadData(searched_data);
+    loadData(searched_data, true);
   }
 
   // Load initial data from API
-  const loadData = (data) => {
+  const loadData = (data, search = false) => {
     const current_working_data = [...data];
     const data_length = current_working_data.length;
     const page_count = Math.floor(data_length / 10);
     const last_page_data_count = ((data_length / 10) - page_count).toFixed(1) * 10;
-    const { current_page } = state;
+    const current_page = search ? 1 : state.current_page;
     const starting_index = getStartingIndex(current_page);
     const ending_index = getEndingIndex(current_page);
     if (current_page < page_count) {
       const current_page_new_data = current_working_data.slice(starting_index, ending_index);
       dispatch({
         type: LOAD__DATA,
-        payload: { page_count: (page_count + 1), last_page_data_count: last_page_data_count, current_page_data: current_page_new_data, current_working_data }
+        payload: {
+          current_page, page_count: (page_count + 1), last_page_data_count: last_page_data_count,
+          current_page_data: current_page_new_data, current_working_data
+        }
       });
     } else {
       const current_page_new_data = current_working_data.slice(starting_index, current_working_data.length);
       dispatch({
         type: LOAD__DATA,
-        payload: { page_count: (page_count + 1), last_page_data_count: last_page_data_count, current_page_data: current_page_new_data, current_working_data }
+        payload: {
+          current_page, page_count: (page_count + 1), last_page_data_count: last_page_data_count,
+          current_page_data: current_page_new_data, current_working_data
+        }
       });
     }
   }
@@ -112,7 +117,7 @@ function App() {
         state,
         dispatch,
         setCurrentPageData,
-        handleSearchInCurrentPage
+        handleSearchInCurrentPage,
       }}>
         <SearchBar />
         <Table />

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { adminContext } from '../Helper/adminContext';
+import { adminContext } from '../helper/adminContext';
 
 const SearchBar = () => {
     const { handleSearchInCurrentPage } = useContext(adminContext);

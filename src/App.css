@@ -8,7 +8,6 @@
   flex-direction: column;
   justify-content: center !important;
   align-items: center !important;
-  border: 1px solid black;
 }
 
 .search-bar {
@@ -40,7 +39,6 @@
 th,
 tr,
 td {
-  border-bottom: 1px solid black;
   padding: 8px 0 !important;
 }
 
@@ -74,4 +72,59 @@ th {
 .row-selected {
   border-radius: 10px !important;
   background-color: rgb(240, 240, 240) !important;
+}
+
+button{
+  cursor: pointer;
+}
+
+.buttons-container {
+  width: 80vw;
+  display: flex;
+  padding: 10px 10px;
+  align-items: center;
+}
+
+.paginations {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1.7rem;
+}
+
+.delete-selected-button {
+  font-size: 0.7rem;
+  min-width: 120px;
+  padding: 7px 5px;
+  border-radius: 50px;
+  border: none;
+  background-color: #ec3f73;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.6px;
+}
+
+.pagination-btn {
+  height: 1.7rem;
+  width: 1.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border: 0.5px solid #1B9CFC;
+  background-color: #1B9CFC !important;
+  color: white;
+  font-size: 0.7rem;
+  border-radius: 50%;
+}
+
+button:disabled {
+  border: 0.5px solid #CAD3C8;
+  background-color: rgb(235, 235, 235) !important;
+  color: gray !important;
+}
+
+.active-btn {
+  background-color: white !important;color: #1B9CFC !important;
 }
