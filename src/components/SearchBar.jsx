@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { adminContext } from '../Helper/adminContext';
 
 const SearchBar = () => {
+    const { handleSearchInCurrentPage } = useContext(adminContext);
     return (
         <div className='search-bar'>
-            <input className='search-input' type={'text'} placeholder={'Search by name, email or role'} />
+            <input className='search-input' type={'text'} placeholder={'Search by name, email or role'} onChange={handleSearchInCurrentPage} />
         </div>
     )
 }

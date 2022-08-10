@@ -22,7 +22,6 @@ const Table = () => {
                         Object.entries(current_page_data).map((data) => {
                             const { id, name, email, role } = data[1]
                             return (
-
                                 <tr key={id}>
                                     <td className='xl-cell'><input type={'checkbox'} /></td>
                                     <td>{name}</td>
@@ -50,6 +49,7 @@ const Table = () => {
                     setCurrentPageData(current_page - 1);
                 }
             }}>change page -</button>
+            <p>{state.page_count}</p>
         </div>
     )
 }
