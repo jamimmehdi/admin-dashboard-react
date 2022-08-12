@@ -2,12 +2,13 @@
 
 .App {
   font-family: 'Manrope', sans-serif;
-  padding-top: 50px;
   width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center !important;
   align-items: center !important;
+  position: relative;
 }
 
 .search-bar {
@@ -20,7 +21,9 @@
 }
 
 .search-input {
+  margin-top: 50px;
   width: 80vw;
+  max-width: 800px !important;
   padding: 5px 10px;
   border: 0.5px solid gainsboro;
   border-radius: 4px;
@@ -33,7 +36,8 @@
 
 .table {
   width: 80vw !important;
-  font-size: 0.75rem;
+  max-width: 800px !important;
+  font-size: 0.65rem;
 }
 
 th,
@@ -43,7 +47,25 @@ td {
 }
 
 th {
-  font-weight: 800;
+  font-weight: 900 !important;
+}
+
+td {
+  font-weight: 500 !important;
+}
+
+.fade-in {
+  animation: fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .xl-cell {
@@ -74,23 +96,24 @@ th {
   background-color: rgb(240, 240, 240) !important;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
 .buttons-container {
+  max-width: 800px !important;
   width: 80vw;
   display: flex;
   padding: 10px 10px;
   align-items: center;
+  column-gap: 4rem;
 }
 
 .paginations {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  column-gap: 1.7rem;
 }
 
 .delete-selected-button {
@@ -126,5 +149,95 @@ button:disabled {
 }
 
 .active-btn {
-  background-color: white !important;color: #1B9CFC !important;
+  background-color: white !important;
+  color: #1B9CFC !important;
+}
+
+.edit-wrapper {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 990;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 2rem;
+}
+
+.close-btn {
+  border: none;
+  height: 2.2rem;
+  width: 2.2rem;
+  font-weight: 700;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+.edit-container {
+  max-width: fit-content;
+  width: 80%;
+  background-color: white;
+  border-radius: 8px;
+  position: relative;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2rem;
+}
+
+.user-edit {
+  padding: 5px 10px;
+  border: 0.5px solid gainsboro;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.user-edit:focus-visible {
+  outline: none;
+}
+
+.role-select {
+  padding: 5px 3px;
+  border: 0.5px solid gainsboro;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.role-select:focus-visible {
+  outline: none;
+}
+
+.save-btn {
+  font-size: 0.7rem;
+  min-width: 120px;
+  padding: 7px 5px;
+  border-radius: 50px;
+  border: none;
+  background-color: #74b9ff;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.6px;
+}
+
+.invalid {
+  border: 0.5px solid rgb(250, 163, 163);
+}
+
+
+@media (max-width: 750px) {
+  .edit-container {
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
 }

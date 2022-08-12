@@ -1,16 +1,25 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import Table from './components/Table';
 import { adminContext } from './helper/adminContext';
-import { LOAD__INITIAL_DATA, LOAD__DATA, LOAD__CURRENT__PAGE__DATA } from './reducer/actions.type';
+import {
+  LOAD__INITIAL_DATA,
+  LOAD__DATA,
+  LOAD__CURRENT__PAGE__DATA,
+  CLEAR__SELECTED,
+  SELECT__ALL__DATA,
+  SET__EDIT__FIELD__DATA,
+  UPDATE__NEW__DATA
+} from './reducer/actions.type';
 import adminReducer from './reducer/adminReducer';
 import { URL } from './api.config';
-import Paginations from './components/Paginations';
+import EditDetails from './components/EditDetails';
 
 
 function App() {
-
+  const [intervalId, setIntervalId] = useState();
+  const [dataEditMode, setDataEditMode] = useState(false);
   const [state, dispatch] = useReducer(adminReducer, {
     data: [],
     current_working_data: [],
@@ -18,7 +27,79 @@ function App() {
     last_page_data_count: 0,
     current_page: 1,
     current_page_data: [],
+    selected_data: [],
+    user_role: ['admin', 'member'],
+    edit_field_data: { id: '', name: '', email: '', role: '' },
   });
+
+  const selectAllCheckboxRef = useRef();
+  const dataCheckboxRef = useRef([]);
+
+  const saveEditChnages = (editId) => {
+    const { name, email, role } = state.edit_field_data;
+    if(name === '' || email === '') return;
+    const edited_data = [...state.data];
+    edited_data.forEach((data, index) => {
+      const { id } = data;
+      if (id === editId) {
+        edited_data[index].name = name;
+        edited_data[index].email = email;
+        edited_data[index].role = role;
+      }
+    });
+    loadInititalData(edited_data);
+    closeEditData();
+  }
+
+  // Edit data
+  const editData = (id, name, email, role) => {
+    dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id, name, email, role } });
+    setDataEditMode(prevMode => !prevMode);
+  }
+
+  // Handle edit change
+  const handleEditChange = (input_value, type) => {
+    const { id, name, email, role } = state.edit_field_data;
+    switch (type) {
+      case 'name':
+        dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id, name: input_value, email, role } });
+        break;
+      case 'email':
+        dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id, name, email: input_value, role } });
+        break;
+      case 'role':
+        dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id, name, email, role: input_value } });
+        break;
+      default:
+        return;
+    }
+  }
+
+  // Close edit data
+  const closeEditData = () => {
+    dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id: '', name: '', email: '', role: '' } });
+    setDataEditMode(prevMode => !prevMode);
+  }
+
+  const selectAllData = () => {
+    if (selectAllCheckboxRef.current.checked) {
+      dataCheckboxRef.current.map((item) => {
+        if (item) item.checked = true;
+      })
+      dispatch({ type: SELECT__ALL__DATA });
+    } else {
+      dataCheckboxRef.current.map((item) => {
+        if (item) item.checked = false;
+      })
+      dispatch({ type: CLEAR__SELECTED });
+    }
+  }
+
+  const addDataToRef = (element) => {
+    if (!dataCheckboxRef.current.includes(element)) {
+      dataCheckboxRef.current.push(element)
+    }
+  }
 
   const getStartingIndex = (index) => {
     if (index === 1) return 0;
@@ -32,6 +113,9 @@ function App() {
 
   // Set current page data
   const setCurrentPageData = (new_page) => {
+    dataCheckboxRef.current = [];
+    selectAllCheckboxRef.current.checked = false;
+    dispatch({ type: CLEAR__SELECTED });
     const { page_count, current_working_data } = state;
     const starting_index = getStartingIndex(new_page);
     const ending_index = getEndingIndex(new_page);
@@ -50,10 +134,20 @@ function App() {
     }
   }
 
+  // Debouncing
+  const searchDebounce = (event) => {
+    if (intervalId) clearInterval(intervalId);
+    const newIntervalId = setTimeout(() => {
+      handleSearchChange(event);
+    }, 700);
+    setIntervalId(newIntervalId);
+  }
+
   // Handle search in current page
-  const handleSearchInCurrentPage = (event) => {
+  const handleSearchChange = (event) => {
+    dispatch({ type: CLEAR__SELECTED });
     const { data } = state;
-    const input_value = event.target.value;
+    const input_value = event.target.value.toLowerCase();
     const searched_data = data.filter((employee_details) => {
       const { id, name, email, role } = employee_details;
       if (id.toLowerCase().includes(input_value)
@@ -117,10 +211,22 @@ function App() {
         state,
         dispatch,
         setCurrentPageData,
-        handleSearchInCurrentPage,
+        handleSearchChange,
+        selectAllCheckboxRef,
+        dataCheckboxRef,
+        selectAllData,
+        addDataToRef,
+        searchDebounce,
+        dataEditMode,
+        setDataEditMode,
+        editData,
+        closeEditData,
+        handleEditChange,
+        saveEditChnages
       }}>
         <SearchBar />
         <Table />
+        {dataEditMode && <EditDetails />}
       </adminContext.Provider>
     </div>
   );
