@@ -86,7 +86,7 @@ function App() {
       }
     });
     loadInititalData(edited_data);
-    cancelDeletion();
+    cancelEditData();
   }
 
   // Edit data

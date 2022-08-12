@@ -74,7 +74,7 @@ const Table = () => {
                 // <p>Current Page:{state.current_page} - Page Count:{state.page_count}</p>
 
                 // Selected data
-                <p>Selected Data: {state.selected_data.map((i) => <span key={i} style={{ marginLeft: '10px', }}>{i}</span>)}</p>
+                // <p>Selected Data: {state.selected_data.map((i) => <span key={i} style={{ marginLeft: '10px', }}>{i}</span>)}</p>
             }
         </div>
     )
