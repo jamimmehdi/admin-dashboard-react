@@ -6,12 +6,11 @@ import {
     CLEAR__SELECTED,
     SELECT__ALL__DATA,
     SET__EDIT__FIELD__DATA,
-    UPDATE__NEW__DATA
+    SET__DELETE__DATA,
 } from "./actions.type";
 
 
 const adminReducer = (state, actions) => {
-    const { selected_data, current_page_data } = state;
 
     switch (actions.type) {
         case LOAD__INITIAL_DATA:
@@ -79,11 +78,17 @@ const adminReducer = (state, actions) => {
                 }
             }
 
-        case UPDATE__NEW__DATA:
+        case SET__DELETE__DATA:
             return {
                 ...state,
-
+                single_delete_data: {
+                    id: actions.payload.id,
+                    name: actions.payload.name,
+                    email: actions.payload.email,
+                    role: actions.payload.role
+                }
             }
+
 
         default:
             return state;

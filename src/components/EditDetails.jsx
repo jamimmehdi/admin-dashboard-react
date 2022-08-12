@@ -2,12 +2,12 @@ import React, { useContext } from 'react'
 import { adminContext } from '../helper/adminContext'
 
 const EditDetails = () => {
-    const { state, setDataEditMode, closeEditData, handleEditChange, saveEditChnages } = useContext(adminContext);
+    const { state, cancelDeletion, handleEditChange, saveEditChnages } = useContext(adminContext);
     const { user_role, edit_field_data } = state;
     const { id, name, email, role } = edit_field_data;
     return (
         <div className='edit-wrapper'>
-            <button className='close-btn' onClick={closeEditData}>x</button>
+            <button className='close-btn' onClick={cancelDeletion}>x</button>
             <div className='edit-container'>
                 <input
                     className={`user-edit ${!name.length && 'invalid'}`}

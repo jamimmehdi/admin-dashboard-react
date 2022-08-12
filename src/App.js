@@ -10,34 +10,72 @@ import {
   CLEAR__SELECTED,
   SELECT__ALL__DATA,
   SET__EDIT__FIELD__DATA,
-  UPDATE__NEW__DATA
+  SET__DELETE__DATA,
 } from './reducer/actions.type';
 import adminReducer from './reducer/adminReducer';
 import { URL } from './api.config';
 import EditDetails from './components/EditDetails';
+import DeleteConfirmation from './components/DeleteConfirmation';
 
 
 function App() {
   const [intervalId, setIntervalId] = useState();
   const [dataEditMode, setDataEditMode] = useState(false);
+  const [dataDeleteMode, setDataDeleteMode] = useState(false);
   const [state, dispatch] = useReducer(adminReducer, {
     data: [],
+    data_map: new Map(),
+    user_role: ['admin', 'member'],
     current_working_data: [],
     page_count: 1,
     last_page_data_count: 0,
     current_page: 1,
     current_page_data: [],
     selected_data: [],
-    user_role: ['admin', 'member'],
+    single_delete_data: { id: '', name: '', email: '', role: '' },
     edit_field_data: { id: '', name: '', email: '', role: '' },
   });
 
   const selectAllCheckboxRef = useRef();
   const dataCheckboxRef = useRef([]);
 
+  // Delete all selected data
+  const deleteSelectedData = () => {
+    if (!state.selected_data.length) return;
+
+    const deleted_data = state.data.filter((data) => {
+      const { id } = data;
+      return !state.selected_data.includes(id);
+    });
+    dispatch({ type: CLEAR__SELECTED });
+    loadInititalData(deleted_data);
+  }
+
+  // Delete single data
+  const deleteData = (id, name, email, role) => {
+    dispatch({ type: SET__DELETE__DATA, payload: { id, name, email, role } });
+    setDataDeleteMode(prevMode => !prevMode);
+  }
+
+  // Confirm delete
+  const confirmDelete = (delete_id) => {
+    const deleted_data = [...state.data].filter((data) => {
+      const { id } = data;
+      if (delete_id !== id) return data;
+    });
+    loadInititalData(deleted_data);
+    setDataDeleteMode(prevMode => !prevMode);
+  }
+
+  // Cancel deletetion
+  const cancelDeletion = () => {
+    dispatch({ type: SET__DELETE__DATA, payload: { id: '', name: '', email: '', role: '' } });
+    setDataDeleteMode(prevMode => !prevMode);
+  }
+
   const saveEditChnages = (editId) => {
     const { name, email, role } = state.edit_field_data;
-    if(name === '' || email === '') return;
+    if (name === '' || email === '') return;
     const edited_data = [...state.data];
     edited_data.forEach((data, index) => {
       const { id } = data;
@@ -48,7 +86,7 @@ function App() {
       }
     });
     loadInititalData(edited_data);
-    closeEditData();
+    cancelDeletion();
   }
 
   // Edit data
@@ -76,7 +114,7 @@ function App() {
   }
 
   // Close edit data
-  const closeEditData = () => {
+  const cancelEditData = () => {
     dispatch({ type: SET__EDIT__FIELD__DATA, payload: { id: '', name: '', email: '', role: '' } });
     setDataEditMode(prevMode => !prevMode);
   }
@@ -190,6 +228,8 @@ function App() {
     }
   }
 
+
+
   // Load initial data
   const loadInititalData = (data) => {
     dispatch({ type: LOAD__INITIAL_DATA, payload: data });
@@ -220,13 +260,18 @@ function App() {
         dataEditMode,
         setDataEditMode,
         editData,
-        closeEditData,
+        cancelEditData,
         handleEditChange,
-        saveEditChnages
+        saveEditChnages,
+        deleteData,
+        confirmDelete,
+        cancelDeletion,
+        deleteSelectedData
       }}>
         <SearchBar />
         <Table />
         {dataEditMode && <EditDetails />}
+        {dataDeleteMode && <DeleteConfirmation />}
       </adminContext.Provider>
     </div>
   );

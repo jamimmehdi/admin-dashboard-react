@@ -5,4 +5,5 @@ export const ADD__TO__SELEDTED__DATA = 'toggle_selected_status';
 export const CLEAR__SELECTED = 'clear_selected';
 export const SELECT__ALL__DATA = 'select_all_data';
 export const SET__EDIT__FIELD__DATA = 'set_edit_field_data';
-export const UPDATE__NEW__DATA = 'update_new_data';
+export const SET__DELETE__DATA = 'set_delete_data';
+export const SET__MAP = 'set_map';

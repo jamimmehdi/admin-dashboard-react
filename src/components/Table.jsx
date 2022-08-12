@@ -5,7 +5,16 @@ import Paginations from './Paginations';
 import { ADD__TO__SELEDTED__DATA } from '../reducer/actions.type';
 
 const Table = () => {
-    const { state, dispatch, selectAllCheckboxRef, selectAllData, addDataToRef, setDataEditMode, editData } = useContext(adminContext);
+    const {
+        state,
+        dispatch,
+        selectAllCheckboxRef,
+        selectAllData,
+        addDataToRef,
+        editData,
+        deleteData,
+        deleteSelectedData
+    } = useContext(adminContext);
     const { current_page_data, selected_data } = state;
 
     return (
@@ -45,8 +54,8 @@ const Table = () => {
                                     <td>{role[0].toUpperCase() + role.substring(1)}</td>
                                     <td>
                                         <div className='action-icons'>
-                                            <FiEdit className='blue' onClick={() => { editData(id, name, email, role) }} />
-                                            <FiTrash2 className='red' />
+                                            <FiEdit className='blue' onClick={() => editData(id, name, email, role)} />
+                                            <FiTrash2 className='red' onClick={() => deleteData(id, name, email, role)} />
                                         </div>
                                     </td>
                                 </tr>
@@ -56,7 +65,7 @@ const Table = () => {
                 </tbody>
             </table>
             <div className='buttons-container'>
-                <button className='delete-selected-button'>Delete Selected</button>
+                <button className='delete-selected-button' onClick={deleteSelectedData}>Delete Selected</button>
                 <Paginations />
             </div>
 

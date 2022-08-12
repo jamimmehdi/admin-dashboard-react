@@ -166,17 +166,6 @@ button:disabled {
   row-gap: 2rem;
 }
 
-.close-btn {
-  border: none;
-  height: 2.2rem;
-  width: 2.2rem;
-  font-weight: 700;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-}
 
 .edit-container {
   max-width: fit-content;
@@ -189,6 +178,18 @@ button:disabled {
   justify-content: center;
   align-items: center;
   column-gap: 2rem;
+}
+
+.close-btn {
+  border: none;
+  height: 2.2rem;
+  width: 2.2rem;
+  font-weight: 700;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
 }
 
 .user-edit {
@@ -227,6 +228,90 @@ button:disabled {
 
 .invalid {
   border: 0.5px solid rgb(250, 163, 163);
+}
+
+.delete-wrapper {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 990;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.delete-container {
+  max-width: fit-content;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 400px;
+  font-size: 0.8rem;
+  background-color: #fbfbfb;
+}
+
+.delete-header {
+  font-weight: 800;
+  color: rgb(47, 47, 47);
+}
+
+.detele-body {
+  font-size: 0.7rem;
+  color: rgb(125, 125, 125);
+  font-weight: 600;
+}
+
+.detele-body>p {
+  padding: 2px 0;
+  margin: 0;
+}
+
+.delete-footer {
+  height: 60px;
+  min-width: 400px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 1rem;
+  padding: 20px 20px;
+  align-items: center;
+  background-color: #f1f2f6;
+  border-radius: 0 0 8px 8px;
+}
+
+.delete-btn {
+  font-size: 0.7rem;
+  padding: 7px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #ec3f73;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.6px;
+}
+
+.cancel-btn {
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.6px;
+  border: none;
+}
+
+.disabled-input {
+  padding: 0px 10px;
+  border: 0.5px solid gainsboro;
+  border-radius: 4px;
+}
+
+.margin-right {
+  display: inline-block;
+  width: 40px;
 }
 
 
